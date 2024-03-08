@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoService.Models;
+using ToDoService.Services;
 
 namespace ToDoService.Controllers;
 
@@ -6,20 +8,36 @@ namespace ToDoService.Controllers;
 [Route("[controller]")]
 public class TasksController : ControllerBase
 {
-    [HttpGet]
-    public Task<List<string>> GetTasks()
+    private readonly ITasksService _tasksService;
+
+    public TasksController(ITasksService tasksService)
     {
-        return Task.FromResult(new List<string>
-        {
-            "задача 1",
-            "задача 2",
-            "задача 3"
-        });
+        _tasksService = tasksService;
+    }
+
+    [HttpGet]
+    public Task<List<ToDoTask>> GetTasks()
+    {
+        return _tasksService.GetTasks();
     }
 
     [HttpGet("{id}")]
-    public Task<string> GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        return Task.FromResult($"задача {id}");
+        var task = await _tasksService.GetTaskById(id);
+        if (task == null) return new NotFoundResult();
+        return Ok(task);
+    }
+
+    [HttpPost]
+    public Task CreateTask([FromBody]ToDoTask task)
+    {
+        return _tasksService.Create(task);
+    }
+
+    [HttpDelete("{id}")]
+    public Task Delete(int id)
+    {
+        return _tasksService.Delete(id);
     }
 }
