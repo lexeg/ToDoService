@@ -5,8 +5,8 @@ namespace ToDoService.Services;
 public interface ITasksService
 {
     Task<List<ToDoTask>> GetTasks();
-    Task<ToDoTask> GetTaskById(int id);
+    Task<ToDoTask> GetById(int id);
     Task Create(ToDoTask task);
-    Task Update(ToDoTask task); // id, minimal information for update
+    Task Update(int id, UpdateToDoTask task);
     Task Delete(int id);
 }

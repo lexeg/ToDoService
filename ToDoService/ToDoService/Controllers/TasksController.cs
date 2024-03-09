@@ -24,15 +24,21 @@ public class TasksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var task = await _tasksService.GetTaskById(id);
+        var task = await _tasksService.GetById(id);
         if (task == null) return new NotFoundResult();
         return Ok(task);
     }
 
     [HttpPost]
-    public Task CreateTask([FromBody]ToDoTask task)
+    public Task CreateTask([FromBody] ToDoTask task)
     {
         return _tasksService.Create(task);
+    }
+
+    [HttpPut("{id}")]
+    public Task Update([FromRoute] int id, [FromBody] UpdateToDoTask task)
+    {
+        return _tasksService.Update(id, task);
     }
 
     [HttpDelete("{id}")]

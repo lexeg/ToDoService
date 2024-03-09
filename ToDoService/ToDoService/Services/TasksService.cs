@@ -4,7 +4,7 @@ namespace ToDoService.Services;
 
 public class TasksService : ITasksService
 {
-    private List<ToDoTask> _tasks;
+    private readonly List<ToDoTask> _tasks;
 
     public TasksService()
     {
@@ -16,7 +16,7 @@ public class TasksService : ITasksService
         return Task.FromResult(_tasks);
     }
 
-    public Task<ToDoTask> GetTaskById(int id)
+    public Task<ToDoTask> GetById(int id)
     {
         var task = _tasks.SingleOrDefault(x => x.Id == id);
         return Task.FromResult(task);
@@ -28,9 +28,12 @@ public class TasksService : ITasksService
         return Task.CompletedTask;
     }
 
-    public Task Update(ToDoTask task)
+    public async Task Update(int id, UpdateToDoTask task)
     {
-        throw new NotImplementedException();
+        var foundTask = await GetById(id);
+        if (foundTask == null) return;
+        foundTask.Description = task.Description;
+        foundTask.IsCompleted = task.IsCompleted;
     }
 
     public Task Delete(int id)
@@ -41,7 +44,7 @@ public class TasksService : ITasksService
         return Task.CompletedTask;
     }
 
-    private List<ToDoTask> CreateFakeTasks()
+    private static List<ToDoTask> CreateFakeTasks()
     {
         return new List<ToDoTask>
         {
@@ -50,7 +53,7 @@ public class TasksService : ITasksService
                 Id = 1,
                 Name = "Задача 1",
                 Description = "",
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 DeadlineDate = DateTime.Now.AddDays(2),
                 IsCompleted = false
             },
@@ -59,7 +62,7 @@ public class TasksService : ITasksService
                 Id = 2,
                 Name = "Задача 2",
                 Description = "",
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 DeadlineDate = DateTime.Now.AddDays(2),
                 IsCompleted = false
             },
@@ -68,7 +71,7 @@ public class TasksService : ITasksService
                 Id = 3,
                 Name = "Задача 3",
                 Description = "",
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 DeadlineDate = DateTime.Now.AddDays(2),
                 IsCompleted = false
             },
@@ -77,7 +80,7 @@ public class TasksService : ITasksService
                 Id = 4,
                 Name = "Задача 4",
                 Description = "",
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 DeadlineDate = DateTime.Now.AddDays(2),
                 IsCompleted = false
             }
