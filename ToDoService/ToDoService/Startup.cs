@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ToDoService.Configuration;
 using ToDoService.DataAccess.Contexts;
 using ToDoService.DataAccess.Repositories;
 using ToDoService.Services;
@@ -17,6 +19,9 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton(
+            _ => new MapperConfiguration(cfg => { cfg.AddProfile(new AutoMapping()); }).CreateMapper());
+
         services.AddDbContext<ToDoDbContext>(optionsBuilder =>
             optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
 
