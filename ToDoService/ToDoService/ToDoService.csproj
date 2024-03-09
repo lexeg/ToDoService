@@ -17,4 +17,8 @@
       <ProjectReference Include="..\ToDoService.DataAccess\ToDoService.DataAccess.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+    </ItemGroup>
+
 </Project>
