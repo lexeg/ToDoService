@@ -1,4 +1,6 @@
-﻿namespace ToDoService.Models;
+﻿using System;
+
+namespace ToDoService.DesktopClient.Models;
 
 public class ToDoTask
 {
