@@ -1,89 +1,54 @@
-﻿using ToDoService.Models;
+﻿using ToDoService.DataAccess.Entities;
+using ToDoService.DataAccess.Repositories;
+using ToDoService.Models;
 
 namespace ToDoService.Services;
 
 public class TasksService : ITasksService
 {
-    private readonly List<ToDoTask> _tasks;
+    private readonly ITasksRepository _tasksRepository;
 
-    public TasksService()
+    public TasksService(ITasksRepository tasksRepository)
     {
-        _tasks = CreateFakeTasks();
+        _tasksRepository = tasksRepository;
     }
 
-    public Task<List<ToDoTask>> GetTasks()
+    public async Task<List<ToDoTask>> GetTasks()
     {
-        return Task.FromResult(_tasks);
+        var tasks = (await _tasksRepository.GetTasks()).Select(ConvertToToDoTask).ToList();
+        return tasks;
     }
 
-    public Task<ToDoTask> GetById(int id)
+    public async Task<ToDoTask> GetById(int id)
     {
-        var task = _tasks.SingleOrDefault(x => x.Id == id);
-        return Task.FromResult(task);
+        var entity = await _tasksRepository.GetById(id);
+        return ConvertToToDoTask(entity);
     }
 
-    public Task Create(ToDoTask task)
-    {
-        _tasks.Add(task);
-        return Task.CompletedTask;
-    }
+    public Task Create(ToDoTask task) => _tasksRepository.Create(ConvertToToDoTaskEntity(task));
 
-    public async Task Update(int id, UpdateToDoTask task)
-    {
-        var foundTask = await GetById(id);
-        if (foundTask == null) return;
-        foundTask.Description = task.Description;
-        foundTask.IsCompleted = task.IsCompleted;
-    }
+    public Task Update(int id, UpdateToDoTask task) =>
+        _tasksRepository.Update(id, task.Description, task.IsCompleted);
 
-    public Task Delete(int id)
-    {
-        var task = _tasks.SingleOrDefault(x => x.Id == id);
-        if (task == null) return Task.CompletedTask;
-        _tasks.Remove(task);
-        return Task.CompletedTask;
-    }
+    public Task Delete(int id) => _tasksRepository.Delete(id);
 
-    private static List<ToDoTask> CreateFakeTasks()
+    private static ToDoTask ConvertToToDoTask(ToDoTaskEntity entity) => new()
     {
-        return new List<ToDoTask>
-        {
-            new()
-            {
-                Id = 1,
-                Name = "Задача 1",
-                Description = "",
-                CreatedDate = DateTime.Now,
-                DeadlineDate = DateTime.Now.AddDays(2),
-                IsCompleted = false
-            },
-            new()
-            {
-                Id = 2,
-                Name = "Задача 2",
-                Description = "",
-                CreatedDate = DateTime.Now,
-                DeadlineDate = DateTime.Now.AddDays(2),
-                IsCompleted = false
-            },
-            new()
-            {
-                Id = 3,
-                Name = "Задача 3",
-                Description = "",
-                CreatedDate = DateTime.Now,
-                DeadlineDate = DateTime.Now.AddDays(2),
-                IsCompleted = false
-            },
-            new()
-            {
-                Id = 4,
-                Name = "Задача 4",
-                Description = "",
-                CreatedDate = DateTime.Now,
-                DeadlineDate = DateTime.Now.AddDays(2),
-                IsCompleted = false
-            }
-        };
-    }
+        Id = entity.Id,
+        Name = entity.Name,
+        Description = entity.Description,
+        CreatedDate = entity.CreatedDate,
+        DeadlineDate = entity.DeadlineDate,
+        IsCompleted = entity.IsCompleted
+    };
+
+    private static ToDoTaskEntity ConvertToToDoTaskEntity(ToDoTask task) => new()
+    {
+        Id = task.Id,
+        Name = task.Name,
+        Description = task.Description,
+        CreatedDate = task.CreatedDate,
+        DeadlineDate = task.DeadlineDate,
+        IsCompleted = task.IsCompleted
+    };
 }

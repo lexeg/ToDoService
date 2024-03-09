@@ -1,4 +1,7 @@
-﻿using ToDoService.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using ToDoService.DataAccess.Contexts;
+using ToDoService.DataAccess.Repositories;
+using ToDoService.Services;
 
 namespace ToDoService;
 
@@ -14,7 +17,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<ITasksService, TasksService>();
+        services.AddDbContext<ToDoDbContext>(optionsBuilder =>
+            optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<ITasksRepository, TasksRepository>();
+        services.AddScoped<ITasksService, TasksService>();
         services.AddControllers();
     }
 
