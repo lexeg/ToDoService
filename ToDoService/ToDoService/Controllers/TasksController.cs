@@ -25,7 +25,7 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var task = await _tasksService.GetById(id);
-        if (task == null) return new NotFoundResult();
+        if (task == null) return NotFound();
         return Ok(task);
     }
 
