@@ -9,4 +9,5 @@ public interface ITasksService
     Task Create(ToDoTask task);
     Task Update(int id, UpdateToDoTask task);
     Task Delete(int id);
+    Task<bool> UploadFile(IFormFile file);
 }
