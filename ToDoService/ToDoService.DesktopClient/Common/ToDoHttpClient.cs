@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ToDoService.DesktopClient.Models;
+using ToDoService.Client.Models;
 
 namespace ToDoService.DesktopClient.Common;
 
