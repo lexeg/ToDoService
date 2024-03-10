@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -46,6 +47,19 @@ public class ToDoHttpClient : IDisposable
     public Task<bool> Delete(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> UploadFile(string filePath)
+    {
+        var fileName = Path.GetFileName(filePath);
+        var client = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Post, $"{_uri}/tasks/file");
+        request.Headers.Add("accept", "*/*");
+        var content = new MultipartFormDataContent();
+        content.Add(new StreamContent(File.OpenRead(filePath)), "formFile", fileName);
+        request.Content = content;
+        var response = await client.SendAsync(request);
+        return response.StatusCode == HttpStatusCode.OK;
     }
 
     public void Dispose()

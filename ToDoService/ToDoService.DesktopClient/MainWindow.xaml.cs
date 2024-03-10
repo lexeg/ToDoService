@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Microsoft.Win32;
 using ToDoService.DesktopClient.Common;
 using ToDoService.DesktopClient.Models;
 
@@ -27,6 +28,17 @@ public partial class MainWindow
         if (await toDoHttpClient.Create(toDoTask))
         {
             MessageBox.Show("Данные отправлены");
+        }
+    }
+
+    private async void SendFileButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog(this) != true) return;
+        using var toDoHttpClient = new ToDoHttpClient("http://localhost:5105");
+        if (await toDoHttpClient.UploadFile(openFileDialog.FileName))
+        {
+            MessageBox.Show($"Файл {openFileDialog.FileName} отправлен");
         }
     }
 }
