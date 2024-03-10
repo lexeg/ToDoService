@@ -1,14 +1,15 @@
 # ToDoService
 
-## Получить список задач:
+## Методы сервиса:
+* Получить список задач:
 ```text
 curl --location 'http://localhost:5105/tasks'
 ```
-## Получить информацию о задаче по id:
+* Получить информацию о задаче по id:
 ```text
 curl --location 'http://localhost:5105/tasks/5'
 ```
-## Создание задачи:
+* Создание задачи:
 ```text
 curl --location 'http://localhost:5105/tasks' \
 --header 'Content-Type: application/json' \
@@ -21,7 +22,10 @@ curl --location 'http://localhost:5105/tasks' \
 "isCompleted": false
 }'
 ```
-## Удалить задачу:
+* Удалить задачу:
 ```text
 curl --location --request DELETE 'http://localhost:5105/tasks/5'
 ```
+
+## Swagger UI:
+Ссылка на страничку: http://localhost:5105/swagger
