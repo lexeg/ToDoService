@@ -31,17 +31,6 @@ public partial class MainWindow
         }
     }
 
-    private async void SendFileButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        var openFileDialog = new OpenFileDialog();
-        if (openFileDialog.ShowDialog(this) != true) return;
-        using var toDoHttpClient = new ToDoHttpClient("http://localhost:5105");
-        if (await toDoHttpClient.UploadFile(openFileDialog.FileName))
-        {
-            MessageBox.Show($"Файл {openFileDialog.FileName} отправлен");
-        }
-    }
-
     private async void ButtonRefit_OnClick(object sender, RoutedEventArgs e)
     {
         var toDoTask = new ToDoTask
@@ -56,5 +45,16 @@ public partial class MainWindow
         var toDoRefitClient = new ToDoRefitClient("http://localhost:5105");
         await toDoRefitClient.Create(toDoTask);
         MessageBox.Show("Данные отправлены");
+    }
+
+    private async void SendFileButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog(this) != true) return;
+        using var toDoHttpClient = new ToDoHttpClient("http://localhost:5105");
+        if (await toDoHttpClient.UploadFile(openFileDialog.FileName))
+        {
+            MessageBox.Show($"Файл {openFileDialog.FileName} отправлен");
+        }
     }
 }
