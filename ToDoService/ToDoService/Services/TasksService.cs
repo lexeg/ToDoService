@@ -34,4 +34,25 @@ public class TasksService : ITasksService
         _tasksRepository.Update(id, task.Description, task.IsCompleted);
 
     public Task Delete(int id) => _tasksRepository.Delete(id);
+
+    public async Task<bool> UploadFile(IFormFile file)
+    {
+        try
+        {
+            if (file.Length <= 0) return false;
+            var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "UploadedFiles"));
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            await using var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create);
+            await file.CopyToAsync(fileStream);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("File Copy Failed", ex);
+        }
+    }
 }
