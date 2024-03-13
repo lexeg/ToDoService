@@ -1,4 +1,4 @@
-﻿namespace ToDoService.DesktopClient.Models;
+﻿namespace ToDoService.Client.Models;
 
 public class UpdateToDoTask
 {

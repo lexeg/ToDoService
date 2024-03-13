@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoService.DesktopClient",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoService.DataAccess", "ToDoService.DataAccess\ToDoService.DataAccess.csproj", "{9DAAC91C-BAA1-41E6-806A-35D558D7E021}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoService.Client", "ToDoService.Client\ToDoService.Client.csproj", "{91CF1F9A-745D-4DA2-80F8-612972A7EB49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +31,9 @@ Global
 		{9DAAC91C-BAA1-41E6-806A-35D558D7E021}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DAAC91C-BAA1-41E6-806A-35D558D7E021}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DAAC91C-BAA1-41E6-806A-35D558D7E021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91CF1F9A-745D-4DA2-80F8-612972A7EB49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91CF1F9A-745D-4DA2-80F8-612972A7EB49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91CF1F9A-745D-4DA2-80F8-612972A7EB49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91CF1F9A-745D-4DA2-80F8-612972A7EB49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

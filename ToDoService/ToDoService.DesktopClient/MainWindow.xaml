@@ -26,7 +26,8 @@
         <TextBox Grid.Column="1" Grid.Row="2" Name="DescriptionTextBox" />
         <DatePicker Grid.Column="1" Grid.Row="3" Name="DeadlineDatePicker" />
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Horizontal">
-            <Button Content="Send" Click="ButtonBase_OnClick" />
+            <Button Content="Send with HttpClient" Click="ButtonHttp_OnClick" />
+            <Button Content="Send with RefitClient" Click="ButtonRefit_OnClick" />
             <Button Content="Send file" Click="SendFileButton_OnClick" />
         </StackPanel>
     </Grid>
