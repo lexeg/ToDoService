@@ -19,4 +19,8 @@ public interface ITasksApi
 
     [Delete("/tasks/{id}")]
     Task Delete(int id);
+
+    [Multipart]
+    [Post("/tasks/file")]
+    Task UploadFile([AliasAs("formFile")] StreamPart stream);
 }
