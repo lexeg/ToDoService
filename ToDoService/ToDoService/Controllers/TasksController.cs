@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoService.Messages;
 using ToDoService.Models;
 using ToDoService.Services;
 
@@ -48,9 +49,9 @@ public class TasksController : ControllerBase
     }
 
     [HttpPost("file")]
-    public async Task<IActionResult> UploadFile(IFormFile formFile)
+    public async Task<IActionResult> UploadFile([FromForm] LoadFileRequest request)
     {
-        if (await _tasksService.UploadFile(formFile))
+        if (await _tasksService.UploadFile(request.File))
         {
             return Ok();
         }
