@@ -55,4 +55,25 @@ public class TasksService : ITasksService
             throw new Exception("File Copy Failed", ex);
         }
     }
+
+    public async Task<bool> UploadBinaryFile(string fileName, byte[] bytesData)
+    {
+        try
+        {
+            if (bytesData.Length <= 0) return false;
+            var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "UploadedFiles"));
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            await using var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
+            await fileStream.WriteAsync(bytesData);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("File Copy Failed", ex);
+        }
+    }
 }

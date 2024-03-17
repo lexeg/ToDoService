@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Web;
+using Microsoft.AspNetCore.Mvc;
 using ToDoService.Messages;
 using ToDoService.Models;
 using ToDoService.Services;
@@ -52,6 +53,18 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> UploadFile([FromForm] LoadFileRequest request)
     {
         if (await _tasksService.UploadFile(request.File))
+        {
+            return Ok();
+        }
+
+        return BadRequest();
+    }
+
+    [HttpPost("binary-file")]
+    public async Task<IActionResult> UploadBinaryFile([FromHeader(Name = "uploadedFileName")] string fileName,
+        [FromBody] byte[] content)
+    {
+        if (await _tasksService.UploadBinaryFile(HttpUtility.UrlDecode(fileName), content))
         {
             return Ok();
         }

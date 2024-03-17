@@ -1,5 +1,4 @@
-﻿using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
@@ -63,20 +62,6 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapGet("/", () => "Hello World!");
-            endpoints.MapPost("/tasks/binary-file", async httpContext =>
-            {
-                var fileName = httpContext.Request.Headers.TryGetValue("uploadedFileName", out var value)
-                    ? HttpUtility.UrlDecode(value)
-                    : Path.GetRandomFileName();
-                var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "UploadedFiles"));
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                await using var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
-                await httpContext.Request.Body.CopyToAsync(fileStream);
-            });
             endpoints.MapControllers();
         });
     }

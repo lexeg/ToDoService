@@ -10,4 +10,5 @@ public interface ITasksService
     Task Update(int id, UpdateToDoTask task);
     Task Delete(int id);
     Task<bool> UploadFile(IFormFile file);
+    Task<bool> UploadBinaryFile(string fileName, byte[] bytesData);
 }
