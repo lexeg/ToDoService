@@ -57,4 +57,15 @@ public partial class MainWindow
             MessageBox.Show($"Файл {openFileDialog.FileName} отправлен");
         }
     }
+
+    private async void SendBinaryFileButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog(this) != true) return;
+        using var toDoHttpClient = new ToDoHttpClient("http://localhost:5105");
+        if (await toDoHttpClient.UploadBinaryFile(openFileDialog.FileName))
+        {
+            MessageBox.Show($"Файл {openFileDialog.FileName} отправлен");
+        }
+    }
 }

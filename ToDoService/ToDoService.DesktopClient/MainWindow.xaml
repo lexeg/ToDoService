@@ -29,6 +29,7 @@
             <Button Content="Send with HttpClient" Click="ButtonHttp_OnClick" />
             <Button Content="Send with RefitClient" Click="ButtonRefit_OnClick" />
             <Button Content="Send file" Click="SendFileButton_OnClick" />
+            <Button Content="Send file (ByteArrayContent)" Click="SendBinaryFileButton_OnClick" />
         </StackPanel>
     </Grid>
 </Window>

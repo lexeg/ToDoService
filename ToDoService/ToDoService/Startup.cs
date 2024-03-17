@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Web;
+using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using ToDoService.Configuration;
 using ToDoService.DataAccess.Contexts;
 using ToDoService.DataAccess.Repositories;
+using ToDoService.Formatters;
 using ToDoService.Services;
 
 namespace ToDoService;
@@ -42,6 +44,7 @@ public class Startup
         services.AddScoped<ITasksRepository, TasksRepository>();
         services.AddScoped<ITasksService, TasksService>();
         services.AddControllers();
+        services.AddControllers(options => { options.InputFormatters.Add(new ByteArrayInputFormatter()); });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
@@ -60,6 +63,20 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapGet("/", () => "Hello World!");
+            endpoints.MapPost("/tasks/binary-file", async httpContext =>
+            {
+                var fileName = httpContext.Request.Headers.TryGetValue("uploadedFileName", out var value)
+                    ? HttpUtility.UrlDecode(value)
+                    : Path.GetRandomFileName();
+                var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "UploadedFiles"));
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                await using var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
+                await httpContext.Request.Body.CopyToAsync(fileStream);
+            });
             endpoints.MapControllers();
         });
     }
